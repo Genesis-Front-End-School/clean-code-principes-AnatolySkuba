@@ -24,11 +24,14 @@ export const Course = (): JSX.Element => {
 
     useEffect(() => {
         if (courseId) {
+            
+            // Maybe it's better to use ref to get an access for DOM element. 
             const video = document.getElementById(courseId) as HTMLVideoElement;
             !videoEl && setVideoEl(video);
         }
     }, [courseId, videoEl, isLoading]);
 
+    // Both Loading and Error should be moved to separate components. 
     if (isLoading) {
         return <p data-testid="course-loading">Loading...</p>;
     }
@@ -37,14 +40,19 @@ export const Course = (): JSX.Element => {
         return <div data-testid="course-error">Error!</div>;
     }
 
+    // data?.data looks weird. 
     const { id, title, description, lessons, rating, meta } = data?.data;
 
     if (
+        // Move this condition to a separate constant.
+        // Also I think it is better to define each condition separately to better readability
+        // For example: meta.courseVideoPreview?.link --> isCourseHasLink, Hls.isSupported() --> isHlsSupported etc.
         videoEl &&
         Hls.isSupported() &&
         meta.courseVideoPreview?.link &&
         localStorage.getItem(STORAGE_KEYS.TOKEN)
     ) {
+        // Move a code below to separate function (better to some helpers sinse I've already saw something similar in another file)
         const savedTime = localStorage.getItem(`currentCourseTime ${id}`);
         const hls = new Hls({
             xhrSetup: (xhr) => {
@@ -69,16 +77,21 @@ export const Course = (): JSX.Element => {
         };
     }
 
+    // 1. What's pip means?
+    // 2. This function should be divided into smaller ones. So huge
     const pip = async (id: string) => {
         const video = document.getElementById(id) as HTMLVideoElement;
 
         const eventListenerKeydown = (event: KeyboardEvent) => {
             if (event.ctrlKey) {
+                // Move "Comma" to a separate constant or enum
                 event.code === "Comma" &&
                     (video.playbackRate =
+                     // Move "0.5", "0.25", "4", "3.75" to a separate constant or enum
                         video.playbackRate >= 0.5 ? video.playbackRate - 0.25 : 0.25);
                 event.code === "Period" &&
                     (video.playbackRate =
+                        // Move "Period" to a separate constant or enum
                         video.playbackRate <= 3.75 ? video.playbackRate + 0.25 : 4);
             }
         };
@@ -100,6 +113,7 @@ export const Course = (): JSX.Element => {
                 },
             });
             hls.loadSource(meta.courseVideoPreview?.link);
+            // remove comment, please
             // hls.loadSource("https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8");
             hls.attachMedia(video);
             savedTime && hls.startLoad(Number(savedTime));
@@ -130,6 +144,7 @@ export const Course = (): JSX.Element => {
                 video?.requestPictureInPicture();
             } catch (err) {
                 toast.error("Video failed to enter/leave Picture-in-Picture mode.");
+                // Try to avoid using console.log
                 console.log("Video failed to enter/leave Picture-in-Picture mode.", err);
             }
         };
@@ -190,6 +205,7 @@ export const Course = (): JSX.Element => {
 
                     <ul>
                         {lessons?.map((lesson: Lesson) => (
+                            {/* Better to move it to separate component  */}
                             <li key={lesson.id} className="flex items-center gap-3">
                                 <video className="hidden" id={lesson.id} loop muted></video>
                                 <p
