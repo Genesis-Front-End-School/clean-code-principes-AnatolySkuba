@@ -23,21 +23,34 @@ export const CourseCard = ({
     const [isPlaying, setIsPlaying] = useState(false);
 
     useEffect(() => {
+        
+        // Maybe it's better to use ref to get an access for DOM element.  
+        
         const video = document.getElementById(id) as HTMLVideoElement;
         if (!videoEl) {
             setVideoEl(video);
         };
     }, [id, videoEl]);
 
+    // use more meaningful name. For example handleOnVideoMouseOver or onVideoMouseOver instead of handleOnMouseOver.
+    // If you'll add MouseOver handler for another element it will help. 
+    
     const handleOnMouseOver = () => {
         const savedTime = localStorage.getItem(`currentTime ${id}`);
 
         if (
+            // Move this condition to a separate constant.
+            // Also I think it is better to define each condition separately to better readability
+            // For example: meta.courseVideoPreview?.link --> isCourseHasLink, Hls.isSupported() --> isHlsSupported etc.
+            
             !savedTime &&
             Hls.isSupported() &&
             meta.courseVideoPreview?.link &&
             localStorage.getItem(STORAGE_KEYS.TOKEN)
         ) {
+            
+            // Move a code below to separate function
+            
             const hls = new Hls({
                 xhrSetup: (xhr) => {
                     xhr.responseType = "json";
@@ -64,6 +77,8 @@ export const CourseCard = ({
             setIsPlaying(true);
         }
     };
+    
+    // Same as for MouseOver handler
 
     const handleOnMouseOut = () => {
         if (videoEl && hlsEl && isPlaying) {
