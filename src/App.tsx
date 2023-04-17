@@ -27,7 +27,7 @@ function App() {
                 <AppRouter />
             </QueryClientProvider>
             
-            // move 2000 to separate constant with clear name
+            {/* move 2000 to separate constant with clear name */}
             <ToastContainer autoClose={2000} />
         </>
     );
