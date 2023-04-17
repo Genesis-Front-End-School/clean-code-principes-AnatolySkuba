@@ -7,6 +7,7 @@ import "./App.css";
 import "react-toastify/dist/ReactToastify.css";
 
 const queryClient = new QueryClient({
+    // move defaultOptions to separate config file
     defaultOptions: {
         queries: {
             keepPreviousData: true,
