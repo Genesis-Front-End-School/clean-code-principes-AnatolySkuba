@@ -29,8 +29,17 @@ export const getAllCourses = async () => {
     }
 };
 
+/*
+{ queryKey: (string | { courseId: string })[] }
+1. Strange interface. I think it should be more strict. 
+2. If there is a reason to use it I think you need to move it to separate interface for better readability
+*/
+
 export const getCourse = async ({ queryKey }: { queryKey: (string | { courseId: string })[] }) => {
     const [, courseId] = queryKey;
+    // Probably you need to use another naming instead of courseId. 
+    // courseId expecting to be a number or string, isn't it? 
+    // But you compare it with object. It's a bit confusing.  
     if (typeof courseId === "object") {
         const url = `${URL}/${API_VERSIONS.V1}/${QUERY_KEYS.CORE}/${QUERY_KEYS.PREVIEW_COURSES}/${courseId.courseId}`;
         try {
