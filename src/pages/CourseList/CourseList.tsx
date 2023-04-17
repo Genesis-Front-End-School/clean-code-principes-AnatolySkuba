@@ -18,14 +18,23 @@ export const CourseList = () => {
     if (isError) {
         return <div data-testid="courses-error">Error!</div>;
     }
-
-    const pages = Math.ceil(data?.data.courses.length / 10);
-    const courses = data?.data.courses.slice((page - 1) * 10, page * 10);
+    
+    const coursesPerPage = 10;
+    const pages = Math.ceil(data?.data.courses.length / coursesPerPage);
+    const courses = data?.data.courses.slice((page - 1) * coursesPerPage, page * coursesPerPage);
 
     return (
         <>
             <ul
-                className="grid gap-5 p-4 justify-items-center tablet:grid-cols-2 laptop:grid-cols-3 desktop:grid-cols-4"
+                className="
+                   grid
+                   gap-5
+                   p-4
+                   justify-items-center
+                   tablet:grid-cols-2
+                   laptop:grid-cols-3
+                   desktop:grid-cols-4
+                "
                 role="listbox"
             >
                 {courses?.map((course: Course) => (
@@ -36,10 +45,24 @@ export const CourseList = () => {
             {/* Pagination */}
             <nav
                 aria-label="Pagination"
-                className="flex justify-center items-center text-gray-600 mt-8 lg:mt-0 caret-transparent"
+                className="
+                    flex
+                    justify-center
+                    items-center
+                    text-gray-600
+                    mt-8
+                    lg:mt-0
+                    caret-transparent
+                "
             >
                 <p
-                    className="p-2 ml-4 rounded hover:bg-gray-100 cursor-pointer"
+                    className="
+                        p-2
+                        ml-4
+                        rounded
+                        hover:bg-gray-100
+                        cursor-pointer
+                    "
                     onClick={() =>
                         setSearchParams({
                             page: (page > 1 ? page - 1 : page).toString(),
@@ -64,7 +87,7 @@ export const CourseList = () => {
                 <p
                     className={`w-10 h-10 text-center leading-10 rounded hover:bg-gray-100 cursor-pointer ${
                         page === 1 && "bg-gray-200 text-gray-900 font-medium"
-                    }`}
+                    }`} //use classNames for better readability
                     onClick={() => setSearchParams({ page: "1" })}
                 >
                     1
@@ -72,7 +95,7 @@ export const CourseList = () => {
                 <p
                     className={`w-10 h-10 text-center leading-10 rounded hover:bg-gray-100 cursor-pointer ${
                         page === 2 && "bg-gray-200 text-gray-900 font-medium"
-                    }`}
+                    }`} //use classNames for better readability
                     onClick={() => setSearchParams({ page: "2" })}
                 >
                     2
@@ -80,18 +103,25 @@ export const CourseList = () => {
                 <p
                     className={`w-10 h-10 text-center leading-10 rounded hover:bg-gray-100 cursor-pointer ${
                         page === 3 && "bg-gray-200 text-gray-900 font-medium"
-                    }`}
+                    }`} //use classNames for better readability
                     onClick={() => setSearchParams({ page: "3" })}
                 >
                     3
                 </p>
+                // automate page/courses distribution to simplify maintenance and improve flexibility
                 <p
-                    className="p-2 ml-4 rounded hover:bg-gray-100 cursor-pointer"
-                    onClick={() =>
-                        setSearchParams({
-                            page: (pages > page ? page + 1 : page).toString(),
-                        })
-                    }
+                   className="
+                       p-2
+                       ml-4
+                       rounded
+                       hover:bg-gray-100
+                       cursor-pointer
+                   "
+                   onClick={() =>
+                       setSearchParams({
+                           page: (pages > page ? page + 1 : page).toString(),
+                       })
+                   }
                 >
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
