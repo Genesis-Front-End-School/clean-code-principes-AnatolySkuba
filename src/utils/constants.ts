@@ -4,6 +4,8 @@ export const API_VERSIONS = {
     V1: "api/v1",
 };
 
+// I think better to use enums instead of const here. 
+
 export const STORAGE_KEYS = {
     TOKEN: "TOKEN",
 };
