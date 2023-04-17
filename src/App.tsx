@@ -7,6 +7,8 @@ import "./App.css";
 import "react-toastify/dist/ReactToastify.css";
 
 const queryClient = new QueryClient({
+    
+    // move defaultOptions to separate config file
     defaultOptions: {
         queries: {
             keepPreviousData: true,
@@ -24,6 +26,8 @@ function App() {
             <QueryClientProvider client={queryClient}>
                 <AppRouter />
             </QueryClientProvider>
+            
+            {/* move 2000 to separate constant with clear name */}
             <ToastContainer autoClose={2000} />
         </>
     );

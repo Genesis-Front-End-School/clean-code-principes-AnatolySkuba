@@ -19,6 +19,8 @@ export const CourseList = () => {
         return <div data-testid="courses-error">Error!</div>;
     }
 
+    // 1. Move 10 to separate constant
+    // 2. Change a naming, please. pagesCont || pagesTotal (or something like this) instead of pages. I think it reads better. 
     const pages = Math.ceil(data?.data.courses.length / 10);
     const courses = data?.data.courses.slice((page - 1) * 10, page * 10);
 
@@ -32,6 +34,8 @@ export const CourseList = () => {
                     <CourseCard key={course.id} {...course} />
                 ))}
             </ul>
+            
+            {/* Move Pagination to a separate component */}
 
             {/* Pagination */}
             <nav
@@ -41,6 +45,7 @@ export const CourseList = () => {
                 <p
                     className="p-2 ml-4 rounded hover:bg-gray-100 cursor-pointer"
                     onClick={() =>
+                    {/* Pass a function to setSearchParams and use previous value to get a page */}
                         setSearchParams({
                             page: (page > 1 ? page - 1 : page).toString(),
                         })
@@ -88,6 +93,7 @@ export const CourseList = () => {
                 <p
                     className="p-2 ml-4 rounded hover:bg-gray-100 cursor-pointer"
                     onClick={() =>
+                        {/* Pass a function to setSearchParams and use previous value to get a page */}
                         setSearchParams({
                             page: (pages > page ? page + 1 : page).toString(),
                         })
