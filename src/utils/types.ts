@@ -1,3 +1,4 @@
+// Why do you use type instead of interface? 
 export type Course = {
     id: string;
     title: string;
@@ -5,6 +6,8 @@ export type Course = {
     previewImageLink: string;
     lessonsCount: number;
     rating: number;
+    
+    // Better to use amother interface for meta field. Same for courseVideoPreview field
     meta: {
         skills: string[];
         courseVideoPreview: { link: string };
