@@ -20,9 +20,7 @@ export const CourseCard = ({
 
   useEffect(() => {
     const video = document.getElementById(id) as HTMLVideoElement;
-    if (!videoEl) {
-      setVideoEl(video);
-    }
+    !videoEl && setVideoEl(video);
   }, [id, videoEl]);
 
   const handleOnMouseOver = () => {
@@ -44,6 +42,7 @@ export const CourseCard = ({
         },
       });
       hls.loadSource(meta.courseVideoPreview?.link);
+      // hls.loadSource("https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8");
       setHlsEl(hls);
       videoEl && hls.attachMedia(videoEl);
       !savedTime && videoEl && videoEl.load();
@@ -72,16 +71,7 @@ export const CourseCard = ({
   };
 
   return (
-    <li
-      className="
-    block
-    min-w-80
-    rounded-lg
-    p-3 border
-    shadow-md
-    shadow-gray-500
-    hover:scale-105"
-    >
+    <li className="block min-w-80 rounded-lg p-3 border shadow-md shadow-gray-500 hover:scale-105">
       <a href={`${ROUTER_KEYS.COURSE}/${id}`}>
         <div className="relative h-28 w-64 mx-auto group" data-testid="group">
           <img
