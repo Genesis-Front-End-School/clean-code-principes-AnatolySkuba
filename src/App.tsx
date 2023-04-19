@@ -1,32 +1,23 @@
-import React from "react";
-import { ToastContainer } from "react-toastify";
-import { QueryClient, QueryClientProvider } from "react-query";
+import React from 'react';
+import { ToastContainer } from 'react-toastify';
+import { QueryClientProvider } from 'react-query';
 
-import AppRouter from "./router/AppRouter";
-import "./App.css";
-import "react-toastify/dist/ReactToastify.css";
-
-const queryClient = new QueryClient({
-    defaultOptions: {
-        queries: {
-            keepPreviousData: true,
-            refetchOnMount: false,
-            refetchOnWindowFocus: false,
-            refetchOnReconnect: true,
-            cacheTime: Infinity,
-        },
-    },
-});
+import AppRouter from './router/AppRouter';
+import { queryClient } from './configs/queryClient';
+import { AUTO_CLOSE_TOAST } from './utils/constants';
+import './App.css';
+import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
-    return (
-        <>
-            <QueryClientProvider client={queryClient}>
-                <AppRouter />
-            </QueryClientProvider>
-            <ToastContainer autoClose={2000} />
-        </>
-    );
+  return (
+    <>
+      <QueryClientProvider client={queryClient}>
+        <AppRouter />
+      </QueryClientProvider>
+      <ToastContainer autoClose={AUTO_CLOSE_TOAST} />
+    </>
+  );
 }
 
 export default App;
+

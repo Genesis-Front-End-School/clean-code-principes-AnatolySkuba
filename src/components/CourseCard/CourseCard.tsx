@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react';
-import Hls from 'hls.js';
+import React, { useState } from 'react';
 import { FcAcceptDatabase, FcPositiveDynamic, FcVoicePresentation } from 'react-icons/fc';
 
-import { Course } from '../../utils/types';
-import { ROUTER_KEYS, STORAGE_KEYS } from '../../utils/constants';
+import { ICourse } from '../../utils/types';
+import { ROUTER_KEYS } from '../../utils/constants';
+import { VideoPlayer } from '../';
 
 export const CourseCard = ({
   id,
@@ -13,82 +13,28 @@ export const CourseCard = ({
   lessonsCount,
   rating,
   meta,
-}: Course): JSX.Element => {
-  const [videoEl, setVideoEl] = useState<HTMLVideoElement | null>(null);
-  const [hlsEl, setHlsEl] = useState<Hls | null>(null);
-  const [isPlaying, setIsPlaying] = useState(false);
-
-  useEffect(() => {
-    const video = document.getElementById(id) as HTMLVideoElement;
-    !videoEl && setVideoEl(video);
-  }, [id, videoEl]);
-
-  const handleOnMouseOver = () => {
-    const savedTime = localStorage.getItem(`currentTime ${id}`);
-
-    if (
-      !savedTime &&
-      Hls.isSupported() &&
-      meta.courseVideoPreview?.link &&
-      localStorage.getItem(STORAGE_KEYS.TOKEN)
-    ) {
-      const hls = new Hls({
-        xhrSetup: (xhr) => {
-          xhr.responseType = 'json';
-          xhr.setRequestHeader(
-            'Authorization',
-            `Bearer ${localStorage.getItem(STORAGE_KEYS.TOKEN)}`
-          );
-        },
-      });
-      hls.loadSource(meta.courseVideoPreview?.link);
-      // hls.loadSource("https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8");
-      setHlsEl(hls);
-      videoEl && hls.attachMedia(videoEl);
-      !savedTime && videoEl && videoEl.load();
-    } else {
-      if (!hlsEl) {
-        localStorage.removeItem(`currentTime ${id}`);
-        handleOnMouseOver();
-      }
-      videoEl && hlsEl && hlsEl.startLoad(Number(savedTime));
-    }
-
-    if (videoEl && !isPlaying) {
-      videoEl.play();
-      setIsPlaying(true);
-    }
-  };
-
-  const handleOnMouseOut = () => {
-    if (videoEl && hlsEl && isPlaying) {
-      videoEl?.currentTime &&
-        localStorage.setItem(`currentTime ${id}`, videoEl?.currentTime.toString());
-      videoEl.pause();
-      hlsEl?.stopLoad();
-      setIsPlaying(false);
-    }
-  };
+}: ICourse): JSX.Element => {
+  const [isHovered, setIsHovered] = useState(false);
 
   return (
-    <li className="block min-w-80 rounded-lg p-3 border shadow-md shadow-gray-500 hover:scale-105">
+    <li
+      className="block min-w-80 rounded-lg p-3 border shadow-md shadow-gray-500 hover:scale-105"
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+    >
       <a href={`${ROUTER_KEYS.COURSE}/${id}`}>
-        <div className="relative h-28 w-64 mx-auto group" data-testid="group">
-          <img
-            alt={title}
-            src={`${previewImageLink}/cover.webp`}
-            className="absolute top-0 h-full w-full rounded-md object-cover group-hover:hidden"
-          />
-          <video
-            id={id}
-            className="absolute top-0 h-full w-full opacity-0 rounded-md object-cover group-hover:opacity-100"
-            loop
-            preload="none"
-            muted
-            onMouseOver={handleOnMouseOver}
-            onMouseOut={handleOnMouseOut}
-            data-testid="video-player"
-          />
+        <div className="relative h-28 w-64 mx-auto" data-testid="group">
+          {isHovered ? (
+            <div className="absolute top-0 h-full w-full rounded-md object-cover">
+              <VideoPlayer src={meta.courseVideoPreview?.link} id={id} muted autoPlay />
+            </div>
+          ) : (
+            <img
+              alt={title}
+              src={`${previewImageLink}/cover.webp`}
+              className="absolute top-0 h-full w-full rounded-md object-cover"
+            />
+          )}
         </div>
         <div className="mt-1">
           <p className="font-medium">{title}</p>
