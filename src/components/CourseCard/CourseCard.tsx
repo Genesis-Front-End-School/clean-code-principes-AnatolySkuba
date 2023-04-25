@@ -1,10 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Hls from "hls.js";
-import {
-    FcAcceptDatabase,
-    FcPositiveDynamic,
-    FcVoicePresentation
-} from "react-icons/fc";
+import { FcAcceptDatabase, FcPositiveDynamic, FcVoicePresentation } from "react-icons/fc";
 
 import { Course } from "../../utils/types";
 import { ROUTER_KEYS, STORAGE_KEYS } from "../../utils/constants";
@@ -24,9 +20,7 @@ export const CourseCard = ({
 
     useEffect(() => {
         const video = document.getElementById(id) as HTMLVideoElement;
-        if (!videoEl) {
-            setVideoEl(video);
-        };
+        !videoEl && setVideoEl(video);
     }, [id, videoEl]);
 
     const handleOnMouseOver = () => {
@@ -48,6 +42,7 @@ export const CourseCard = ({
                 },
             });
             hls.loadSource(meta.courseVideoPreview?.link);
+            // hls.loadSource("https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8");
             setHlsEl(hls);
             videoEl && hls.attachMedia(videoEl);
             !savedTime && videoEl && videoEl.load();
@@ -76,53 +71,17 @@ export const CourseCard = ({
     };
 
     return (
-        <li className="
-                           block
-                           min-w-80
-                           rounded-lg
-                           p-3
-                           border
-                           shadow-md
-                           shadow-gray-500
-                           hover:scale-105
-                       ">
+        <li className="block min-w-80 rounded-lg p-3 border shadow-md shadow-gray-500 hover:scale-105">
             <a href={`${ROUTER_KEYS.COURSE}/${id}`}>
-                <div
-                    className="
-                        relative
-                        h-28
-                        w-64
-                        mx-auto
-                        group
-                    "
-                    data-testid="group"
-                >
+                <div className="relative h-28 w-64 mx-auto group" data-testid="group">
                     <img
                         alt={title}
                         src={`${previewImageLink}/cover.webp`}
-                        className="
-                            absolute
-                            top-0
-                            h-full
-                            w-full
-                            rounded-md
-                            object-cover
-                            group-hover:hidden
-                        "
+                        className="absolute top-0 h-full w-full rounded-md object-cover group-hover:hidden"
                     />
-                    
                     <video
                         id={id}
-                        className="
-                            absolute
-                            top-0
-                            h-full
-                            w-full
-                            opacity-0
-                            rounded-md
-                            object-cover
-                            group-hover:opacity-100
-                        "
+                        className="absolute top-0 h-full w-full opacity-0 rounded-md object-cover group-hover:opacity-100"
                         loop
                         preload="none"
                         muted
@@ -131,78 +90,37 @@ export const CourseCard = ({
                         data-testid="video-player"
                     />
                 </div>
-                
                 <div className="mt-1">
                     <p className="font-medium">{title}</p>
-                    
-                    <p
-                        className="
-                            text-sm
-                            text-gray-500
-                        "
-                    >
-                        {description}
-                    </p>
+                    <p className="text-sm text-gray-500">{description}</p>
 
-                        <div
-                            className="
-                                flex
-                                items-center
-                                gap-3
-                                mt-1
-                                text-xs
-                            "
-                        >
-                            
+                    <div className="flex items-center gap-3 mt-1 text-xs">
                         <div>
-                            <p className="text-gray-500">
-                                Lessons
-                            </p>
-                            
-                            <p
-                               className="
-                                   flex
-                                   font-medium
-                                   gap-1
-                               "
-                            >
+                            <p className="text-gray-500">Lessons</p>
+                            <p className="flex font-medium gap-1">
                                 <FcAcceptDatabase size="16" />
-                                
                                 {lessonsCount}
                             </p>
                         </div>
 
                         <div>
                             <p className="text-gray-500">Rating</p>
-                            
-                            <p
-                               className="
-                                   flex
-                                   font-medium
-                                   gap-1
-                               "
-                            >
+                            <p className="flex font-medium gap-1">
                                 <FcPositiveDynamic size="16" />
-                                
                                 {rating}
                             </p>
                         </div>
 
                         <div>
                             <div className="flex gap-2">
-                                <p className="text-gray-500">
-                                    Skills
-                                </p>
-                                
+                                <p className="text-gray-500">Skills</p>
                                 <FcVoicePresentation size="16" />
                             </div>
                             <ul>
                                 {meta.skills ? (
                                     meta.skills?.map((skill, index) => (
                                         <li key={index}>
-                                            <p className="w-50 font-medium">
-                                                {skill}
-                                            </p>
+                                            <p className="w-50 font-medium">{skill}</p>
                                         </li>
                                     ))
                                 ) : (

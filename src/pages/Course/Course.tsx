@@ -17,7 +17,7 @@ import { useCourseQuery } from "./useCourseQuery";
 
 export const Course = (): JSX.Element => {
     const [videoEl, setVideoEl] = useState<HTMLVideoElement | null>(null);
-    const [isPip, setIsPip] = useState(""); // missleading naming
+    const [isPip, setIsPip] = useState("");
     const navigate = useNavigate();
     const { courseId } = useParams<{ courseId: string }>();
     const { data, isLoading, isError } = useCourseQuery(courseId!);
@@ -25,9 +25,7 @@ export const Course = (): JSX.Element => {
     useEffect(() => {
         if (courseId) {
             const video = document.getElementById(courseId) as HTMLVideoElement;
-            if (!videoEl) {
-                setVideoEl(video);
-            };
+            !videoEl && setVideoEl(video);
         }
     }, [courseId, videoEl, isLoading]);
 
@@ -39,14 +37,7 @@ export const Course = (): JSX.Element => {
         return <div data-testid="course-error">Error!</div>;
     }
 
-    const {
-        id,
-        title,
-        description,
-        lessons,
-        rating,
-        meta
-    } = data?.data;
+    const { id, title, description, lessons, rating, meta } = data?.data;
 
     if (
         videoEl &&
@@ -65,6 +56,7 @@ export const Course = (): JSX.Element => {
             },
         });
         hls.loadSource(meta.courseVideoPreview?.link);
+        // hls.loadSource("https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8");
         hls.attachMedia(videoEl);
 
         savedTime && hls.startLoad(Number(savedTime));
@@ -112,9 +104,7 @@ export const Course = (): JSX.Element => {
             hls.attachMedia(video);
             savedTime && hls.startLoad(Number(savedTime));
             setTimeout(function () {
-                if (savedTime) {
-                    video.currentTime = Number(savedTime);
-                }
+                if (savedTime) video.currentTime = Number(savedTime);
                 video.play();
             }, 150);
             video.onpause = () => {
@@ -147,77 +137,35 @@ export const Course = (): JSX.Element => {
 
     return (
         <div className="p-3" data-testid="course-page">
-            <FcUndo
-                className="cursor-pointer"
-                onClick={() => navigate(-1)} role="link"
-            />
-            
+            <FcUndo className="cursor-pointer" onClick={() => navigate(-1)} role="link" />
             <div className="max-w-160 mx-auto">
                 <video
                     id={id}
-                    className="
-                        border
-                        h-full
-                        w-full
-                        rounded-md
-                        object-cover
-                    "
+                    className="border h-full w-full rounded-md object-cover"
                     loop
                     muted
                     controls
                     data-testid="video-player"
                 />
             </div>
-            
             <div className="mt-1">
-                <p className="font-medium">
-                    {title}
-                </p>
-                
-                <p
-                    className="
-                        text-sm
-                        text-gray-500
-                    "
-                >
-                    {description}
-                </p>
+                <p className="font-medium">{title}</p>
+                <p className="text-sm text-gray-500">{description}</p>
 
-                <div
-                    className="
-                        flex
-                        items-center
-                        justify-around
-                        text-xs
-                    "
-                >
+                <div className="flex items-center justify-around text-xs">
                     <div className="mt-1.5">
-                        <p className="text-gray-500">
-                            Rating
-                        </p>
-                        
-                        <p
-                            className="
-                                flex
-                                font-medium
-                                gap-1
-                            "
-                        >
+                        <p className="text-gray-500">Rating</p>
+                        <p className="flex font-medium gap-1">
                             <FcPositiveDynamic size="16" />
-                            
                             {rating}
                         </p>
                     </div>
 
                     <div className="mt-1.5">
                         <div className="flex gap-2">
-                            <p className="text-gray-500">
-                                Skills
-                            </p>
-                            
+                            <p className="text-gray-500">Skills</p>
                             <FcVoicePresentation size="16" />
                         </div>
-                        
                         <ul>
                             {meta.skills ? (
                                 meta.skills?.map((skill: string, index: number) => (
@@ -235,39 +183,17 @@ export const Course = (): JSX.Element => {
                 </div>
 
                 <div className="mt-2">
-                    <div
-                        className="
-                            flex
-                            gap-2
-                            items-center
-                        "
-                    >
-                        <p className="font-medium">
-                            Lessons
-                        </p>
-                        
+                    <div className="flex gap-2 items-center">
+                        <p className="font-medium">Lessons</p>
                         <FcAcceptDatabase size="16" />
                     </div>
 
                     <ul>
                         {lessons?.map((lesson: Lesson) => (
-                            <li
-                                key={lesson.id}
-                                className="
-                                    flex
-                                    items-center
-                                    gap-3
-                                "
-                            >
+                            <li key={lesson.id} className="flex items-center gap-3">
                                 <video className="hidden" id={lesson.id} loop muted></video>
-                                
                                 <p
-                                    className="
-                                        cursor-pointer
-                                        text-blue-800
-                                        hover:scale-105
-                                        hover:ml-2
-                                    "
+                                    className="cursor-pointer text-blue-800 hover:scale-105 hover:ml-2"
                                     onClick={() =>
                                         lesson.status === "locked"
                                             ? toast.error("Oops, the lesson is locked!")
@@ -282,7 +208,7 @@ export const Course = (): JSX.Element => {
                                     <>
                                         <FcStart className="animate-pulse" />
                                         <p>
-                                            Press Ctrl + &#62; to increase speed, press Ctrl + &lt; //implement variables to simplify maintenance
+                                            Press Ctrl + &#62; to increase speed, press Ctrl + &lt;
                                             to slow down playback
                                         </p>
                                     </>
