@@ -1,1 +1,7 @@
-[![Review Assignment Due Date](https://classroom.github.com/assets/deadline-readme-button-24ddc0f5d75046c5622901739e7c5dd533143b0c8e959d652212380cedb1ea36.svg)](https://classroom.github.com/a/_2xjYeZK)
+Логіка виконання роботи:
+
+1. yarn create react-app my-app --template typescript
+2. Створив сторінку з курсами та отримав дані з серверу.
+3. Створив компонент картки курсу та відобразив дані курсу на власний розсуд. Через "CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource." відео не відображається (майже день пробував різні варіанти, але безрезультатно). Для подальшої розробки використовував відео "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8". Зробив пагінацію на фронтенді, хоча запит для пагінації має здійснюватись за допомогою параметрів на бекенд, а там на базу даних.
+4. Створив сторінку з переглядом курсу.
+5. Решту часу витратив на jest (раніше читав, але практики не було).
