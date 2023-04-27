@@ -17,7 +17,6 @@ export const Course = (): JSX.Element => {
   if (isError) {
     return <Error />;
   }
-  console.log(20, course);
 
   const { id, title, description, lessons, rating, meta } = course;
 
