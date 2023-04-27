@@ -3,6 +3,6 @@ import { getAllCourses } from '../../api/API';
 import { ROUTER_KEYS } from '../../utils/constants';
 
 export const useCourseListQuery = () => {
-  const { data, isLoading, isError } = useQuery(`${ROUTER_KEYS.COURSES}`, getAllCourses);
-  return { data, isLoading, isError };
+  const { data: courses, isLoading, isError } = useQuery(`${ROUTER_KEYS.COURSES}`, getAllCourses);
+  return { courses, isLoading, isError };
 };

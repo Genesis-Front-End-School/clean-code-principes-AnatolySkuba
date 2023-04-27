@@ -14,7 +14,7 @@ export const Course = (): JSX.Element => {
     return <Loader />;
   }
 
-  if (isError) {
+  if (isError || !course) {
     return <Error />;
   }
 
@@ -24,7 +24,7 @@ export const Course = (): JSX.Element => {
     <div className="p-5 bg-slate-100 h-screen" data-testid="course-page">
       <FcUndo className="cursor-pointer" onClick={() => navigate(-1)} role="link" />
       <div className="mx-auto">
-        <VideoPlayer id={id} src={meta.courseVideoPreview?.link} controls />
+        <VideoPlayer id={id} src={meta?.courseVideoPreview?.link} controls />
       </div>
       <div className="mt-2">
         <h1 className="text-xl font-medium">{title}</h1>
@@ -45,7 +45,7 @@ export const Course = (): JSX.Element => {
               <FcVoicePresentation size="16" />
             </div>
             <ul>
-              {meta.skills ? (
+              {meta?.skills ? (
                 meta.skills?.map((skill: string, index: number) => (
                   <li key={index}>
                     <p className="w-50 font-medium">{skill}</p>

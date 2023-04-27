@@ -8,7 +8,7 @@ import { useCourseListQuery } from './useCourseListQuery';
 export const CourseList = () => {
   const [searchParams] = useSearchParams();
   const perPage = Number(searchParams.get('perPage')) || COURSES_PER_PAGE.Ten;
-  const { data, isLoading, isError } = useCourseListQuery();
+  const { courses, isLoading, isError } = useCourseListQuery();
 
   const currentPage = Number(searchParams.get('page')) || 1;
 
@@ -16,12 +16,12 @@ export const CourseList = () => {
     return <Loader />;
   }
 
-  if (isError) {
+  if (isError || !courses) {
     return <Error />;
   }
 
-  const pagesTotal = Math.ceil(data.courses.length / perPage);
-  const courses = data.courses.slice((currentPage - 1) * perPage, currentPage * perPage);
+  const pagesTotal = Math.ceil(courses.length / perPage);
+  const currentPageCourses = courses.slice((currentPage - 1) * perPage, currentPage * perPage);
 
   return (
     <>
@@ -29,12 +29,12 @@ export const CourseList = () => {
         className="grid gap-5 p-5 justify-items-center tablet:grid-cols-2 laptop:grid-cols-3 desktop:grid-cols-4"
         role="listbox"
       >
-        {courses?.map((course: ICourse) => (
+        {currentPageCourses.map((course: ICourse) => (
           <CourseCard key={course.id} {...course} />
         ))}
       </ul>
 
-      {pagesTotal > 1 && <Pagination coursesTotal={data.courses.length} />}
+      {pagesTotal > 1 && <Pagination coursesTotal={courses.length} />}
     </>
   );
 };
