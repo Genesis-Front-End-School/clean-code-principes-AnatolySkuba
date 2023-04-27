@@ -1,16 +1,16 @@
+export interface ICourses {
+  courses: ICourse[];
+}
+
 export interface ICourse {
   id: string;
   title: string;
   description: string;
   previewImageLink: string;
   lessonsCount: number;
+  lessons?: ILesson[];
   rating: number;
   meta: IMeta;
-}
-
-interface IMeta {
-  skills: string[];
-  courseVideoPreview: { link: string };
 }
 
 export interface ILesson {
@@ -19,6 +19,15 @@ export interface ILesson {
   status: string;
   link: string;
 }
+
+interface IMeta {
+  skills: string[];
+  courseVideoPreview: { link: string };
+}
+
+export type Token = {
+  token: string;
+};
 
 export enum LessonStatus {
   Locked = 'locked',
@@ -30,6 +39,6 @@ export enum KeyboardButton {
   Period = 'Period',
 }
 
-export interface IQueryKey {
+export type QueryKey = {
   queryKey: (string | { courseId: string })[];
-}
+};

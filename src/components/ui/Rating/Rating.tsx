@@ -28,7 +28,7 @@ export const Rating: FC<Props> = ({ rating }) => {
                   <stop offset={`${fillPercent}%`} stopColor={color} />
                   <stop offset={`${fillPercent}%`} stopColor="#fff" />
                 </linearGradient>
-                <use href={sprite + '#heart'} fill={`url(#${uniqueId})`}></use>
+                <use href={sprite + '#heart'} fill={`url(#${uniqueId})`} stroke={color}></use>
               </svg>
             </li>
           );
