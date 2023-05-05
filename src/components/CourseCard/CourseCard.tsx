@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 import { ICourse } from '../../utils/types';
 import { VideoPlayer } from '../';
-import { Rating } from '../ui/Rating/Rating';
+import { Rating } from '../ui';
 
 export const CourseCard = ({
   id,

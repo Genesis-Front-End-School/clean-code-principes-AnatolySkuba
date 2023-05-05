@@ -1,14 +1,23 @@
 import { FcAcceptDatabase, FcPositiveDynamic, FcUndo, FcVoicePresentation } from 'react-icons/fc';
+import { useQuery } from 'react-query';
 import { useNavigate, useParams } from 'react-router-dom';
+import { getCourseById } from '../../api/courses.api';
 
-import { useCourseQuery } from './useCourseQuery';
+// import { useCourseQuery } from './useCourseQuery';
 import { Lesson, VideoPlayer, Loader, Error } from '../../components';
+import { ROUTER_KEYS } from '../../utils/constants';
 import { ILesson } from '../../utils/types';
 
 export const Course = (): JSX.Element => {
   const navigate = useNavigate();
-  const { courseId } = useParams<{ courseId: string }>();
-  const { course, isLoading, isError } = useCourseQuery(courseId!);
+  // const { courseId } = useParams<{ courseId: string }>();
+  const params = useParams<{ courseId: string }>();
+  // const { course, isLoading, isError } = useCourseQuery( courseId! );
+  const {
+    data: course,
+    isLoading,
+    isError,
+  } = useQuery([`${ROUTER_KEYS.COURSES}`, { courseId: params.courseId || '' }], getCourseById);
 
   if (isLoading) {
     return <Loader />;
@@ -21,7 +30,7 @@ export const Course = (): JSX.Element => {
   const { id, title, description, lessons, rating, meta } = course;
 
   return (
-    <div className="p-5 bg-slate-100 h-screen" data-testid="course-page">
+    <div className="p-5 bg-slate-100 h-screen" role="article">
       <FcUndo className="cursor-pointer" onClick={() => navigate(-1)} role="link" />
       <div className="mx-auto">
         <VideoPlayer id={id} src={meta?.courseVideoPreview?.link} controls />

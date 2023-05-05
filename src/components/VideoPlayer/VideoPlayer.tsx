@@ -95,6 +95,7 @@ export const VideoPlayer: FC<VideoPlayerProps> = ({
       controls={controls}
       muted={muted}
       loop
+      data-testid="video-element"
     />
   );
 };

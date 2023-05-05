@@ -1,5 +1,5 @@
 import { useQuery } from 'react-query';
-import { getAllCourses } from '../../api/API';
+import { getAllCourses } from '../../api/courses.api';
 import { ROUTER_KEYS } from '../../utils/constants';
 
 export const useCourseListQuery = () => {

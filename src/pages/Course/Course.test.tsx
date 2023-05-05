@@ -1,93 +1,95 @@
-import { screen } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
+import { useQuery } from 'react-query';
+import { useParams } from 'react-router-dom';
+import '@testing-library/jest-dom';
 
 import { Course } from './Course';
-import { useCourseQuery } from './useCourseQuery';
-import { renderWithRouter } from '../../tests/helpers/renderWithRouter';
 
-const mockedUseCourseQuery = useCourseQuery as jest.Mock;
-jest.mock('./useCourseQuery');
+jest.mock('react-query');
 
-const response = {
-  containsLockedLessons: true,
-  description: 'Find the inner strength to overcome procrastination and reach your goals.',
-  duration: 509,
-  id: '3b77ceb6-fb43-4cf5-a25b-8fe9222a0714',
-  launchDate: '2023-03-06T16:25:24.000Z',
+const navigate = jest.fn();
+jest.mock('react-router-dom', () => ({
+  useParams: jest.fn(),
+  useNavigate: () => navigate,
+}));
+
+jest.mock('../../components/Loader', () => ({
+  __esModule: true,
+  Loader: () => 'Mocked the Loader Component',
+}));
+
+jest.mock('../../components/Error', () => ({
+  __esModule: true,
+  Error: () => 'Mocked the Error Component',
+}));
+
+jest.mock('../../components/Lesson', () => ({
+  __esModule: true,
+  Lesson: () => 'Mocked the Lesson Component',
+}));
+
+jest.mock('../../components/VideoPlayer', () => ({
+  __esModule: true,
+  VideoPlayer: () => 'Mocked the VideoPlayer Component',
+}));
+
+const mockCourse = {
+  id: '1',
+  title: 'Course Title',
+  description: 'Course Description',
   lessons: [
-    {
-      duration: 229,
-      id: 'b9ad7391-0f0b-4fe1-b919-6525d76ad3c4',
-      link: 'https://wisey.app/videos/the-power-of-self-discipline-how-to-stay-on-track/lesson-1/AppleHLS1/lesson-1.m3u8',
-      meta: null,
-      order: 1,
-      previewImageLink:
-        'https://wisey.app/assets/images/web/lessons-covers/the-power-of-self-discipline-how-to-stay-on-track/lesson-1',
-      status: 'unlocked',
-      title: 'Why short-term gains aren’t worth it',
-      type: 'video',
-    },
+    { id: '1', title: 'Lesson 1', videoUrl: 'https://example.com/lesson1.mp4' },
+    { id: '2', title: 'Lesson 2', videoUrl: 'https://example.com/lesson2.mp4' },
   ],
+  rating: 4.5,
   meta: {
-    slug: 'the-power-of-self-discipline-how-to-stay-on-track',
-    skills: ['Increasing self-awareness'],
+    skills: ['Skill 1', 'Skill 2'],
     courseVideoPreview: {
-      link: 'https://wisey.app/videos/the-power-of-self-discipl…w-to-stay-on-track/preview/AppleHLS1/preview.m3u8',
-      duration: 19,
-      previewImageLink:
-        'https://wisey.app/assets/images/web/course-covers/the-power-of-self-discipline-how-to-stay-on-track/preview',
+      link: 'https://example.com/course-preview.mp4',
     },
   },
-  previewImageLink:
-    'https://wisey.app/assets/images/web/course-covers/the-power-of-self-discipline-how-to-stay-on-track',
-  rating: 3.5,
-  status: 'launched',
-  tags: ['productivity'],
-  title: 'The Power of Self-Discipline: How to Stay on Track',
 };
 
 describe('Course component', () => {
-  afterEach(jest.clearAllMocks);
-  //   test('Displays the loading view', () => {
-  //     mockedUseCourseQuery.mockImplementation(() => ({
-  //       isLoading: true,
-  //     }));
-  //     renderWithRouter(<Course />);
-  //     expect(screen.getByTestId('course-loading')).toBeInTheDocument();
-  //     expect(screen.getByText(/Loading.../i)).toBeVisible();
-  //   });
-  //   test('Displays the error message', () => {
-  //     mockedUseCourseQuery.mockImplementation(() => ({
-  //       isError: true,
-  //     }));
-  //     renderWithRouter(<Course />);
-  //     expect(screen.getByTestId('course-error')).toBeInTheDocument();
-  //     expect(screen.getByText(/Error!/i)).toBeVisible();
-  //   });
-  test('Render Course correctly', () => {
-    mockedUseCourseQuery.mockImplementation(() => ({
-      course: response,
-    }));
-    renderWithRouter(<Course />);
-    expect(mockedUseCourseQuery).toBeCalledTimes(1);
-    expect(screen.getByTestId('course-page')).toBeInTheDocument();
-    //   expect(screen.getByTestId('video-player')).toBeInTheDocument();
-    //   expect(screen.getByText('Lessons')).toBeInTheDocument();
-    //   expect(screen.getByText('Rating')).toBeInTheDocument();
-    //   expect(screen.getByText('Skills')).toBeInTheDocument();
+  beforeEach(() => {
+    (useParams as jest.Mock).mockReturnValue({ courseId: '1' });
   });
-  //   test('The video tag should have loop and controls attributes', () => {
-  //     mockedUseCourseQuery.mockImplementation(() => ({
-  //       data: response,
-  //     }));
-  //     renderWithRouter(<Course />);
-  //     expect(screen.getByTestId('video-player')).toHaveAttribute('loop');
-  //     expect(screen.getByTestId('video-player')).toHaveAttribute('controls');
-  //   });
-  // test("Course snapshot", () => {
-  //     mockedUseCourseQuery.mockImplementation(() => ({
-  //         data: response,
-  //     }));
-  //     renderWithRouter(<Course />);
-  //     expect(screen.getByTestId("course-page")).toMatchSnapshot();
-  // });
+
+  afterEach(jest.clearAllMocks);
+
+  it('Displays the loading view', () => {
+    (useQuery as jest.Mock).mockReturnValue({ isLoading: true });
+
+    render(<Course />);
+
+    expect(screen.getByText(/Mocked the Loader Component/)).toBeInTheDocument();
+  });
+
+  it('Displays the Error Component', () => {
+    (useQuery as jest.Mock).mockReturnValue({ isError: true });
+
+    render(<Course />);
+
+    expect(screen.getByText(/Mocked the Error Component/)).toBeInTheDocument();
+  });
+
+  it('Render Course component correctly', async () => {
+    (useQuery as jest.Mock).mockReturnValue({
+      data: mockCourse,
+      isLoading: false,
+      isError: false,
+    });
+
+    render(<Course />);
+    expect(screen.getByRole('article')).toBeInTheDocument();
+    expect(screen.getByText(/Mocked the VideoPlayer Component/)).toBeInTheDocument();
+  });
+
+  it('calls navigate function with -1 when the undo button is clicked', () => {
+    render(<Course />);
+    const undoButton = screen.getByRole('link');
+    fireEvent.click(undoButton);
+
+    expect(navigate).toHaveBeenCalledWith(-1);
+  });
 });

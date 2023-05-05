@@ -1,13 +1,12 @@
-import { useSearchParams as useReactRouterSearchParams } from 'react-router-dom';
-import { render, screen } from '@testing-library/react';
-import { useQuery } from 'react-query';
+import { screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
 
 import { CourseList } from './CourseList';
+import { useCourseListQuery } from './useCourseListQuery';
+import { renderWithRouter } from '../../tests/helpers/renderWithRouter';
 
-jest.mock('react-router-dom', () => ({
-  useSearchParams: jest.fn(),
-}));
+const mockedUseCourseListQuery = useCourseListQuery as jest.Mock;
+jest.mock('./useCourseListQuery');
 
 jest.mock('hls.js', () => {
   class Hls {
@@ -16,8 +15,6 @@ jest.mock('hls.js', () => {
   }
   return Hls;
 });
-
-jest.mock('react-query');
 
 jest.mock('../../components/Loader', () => ({
   __esModule: true,
@@ -39,7 +36,7 @@ jest.mock('../../components/Pagination', () => ({
   Pagination: () => 'Mocked the Pagination Component',
 }));
 
-const mockData = [
+const MockData = [
   { id: 1, title: 'Course 1' },
   { id: 2, title: 'Course 2' },
   { id: 3, title: 'Course 3' },
@@ -54,37 +51,37 @@ const mockData = [
 ];
 
 describe('CourseList component', () => {
-  beforeEach(() => {
-    // Reset the mock implementation before each test
-    (useReactRouterSearchParams as jest.Mock).mockReset();
-
-    // Mock the return value of useSearchParams
-    const mockSearchParams = new URLSearchParams('perPage=10&page=1');
-    (useReactRouterSearchParams as jest.Mock).mockReturnValue([mockSearchParams]);
-  });
-
   afterEach(jest.clearAllMocks);
 
   it('Displays the loading view', () => {
-    (useQuery as jest.Mock).mockReturnValue({ isLoading: true });
+    mockedUseCourseListQuery.mockImplementation(() => ({
+      isLoading: true,
+    }));
 
-    render(<CourseList />);
+    renderWithRouter(<CourseList />);
 
-    expect(screen.getByText(/Mocked the Loader Component/)).toBeInTheDocument();
+    expect(screen.getByText(/Mocked the Loader Component/)).toBeTruthy();
   });
 
   it('Displays the Error Component', () => {
-    (useQuery as jest.Mock).mockReturnValue({ isError: true });
+    mockedUseCourseListQuery.mockImplementation(() => ({
+      isError: true,
+    }));
 
-    render(<CourseList />);
+    renderWithRouter(<CourseList />);
 
-    expect(screen.getByText(/Mocked the Error Component/)).toBeInTheDocument();
+    console.log(83, screen.debug());
+
+    expect(screen.getByText(/Mocked the Error Component/)).toBeTruthy();
   });
 
-  it('Render CourseList correctly', async () => {
-    (useQuery as jest.Mock).mockReturnValue({ data: mockData, isLoading: false, isError: false });
+  it('Render CourseList correctly', () => {
+    mockedUseCourseListQuery.mockImplementation(() => ({
+      courses: MockData,
+    }));
 
-    render(<CourseList />);
+    renderWithRouter(<CourseList />);
+    console.log(91, screen.debug());
 
     expect(screen.getByRole('listbox')).toBeInTheDocument();
   });
