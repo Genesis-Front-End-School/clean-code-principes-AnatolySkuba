@@ -5,16 +5,11 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test0": "react-scripts test",
     "test": "jest",
     "test:watch": "jest --watch",
-    "test:coverage": "jest --coverage",
-    "eject": "react-scripts eject"
+    "test:coverage": "jest --coverage"
   },
   "dependencies": {
-    "@types/node": "^16.7.13",
-    "@types/react": "^18.0.0",
-    "@types/react-dom": "^18.0.0",
     "axios": "^1.3.4",
     "hls.js": "^1.3.4",
     "react": "^18.2.0",
@@ -33,30 +28,21 @@
     "@babel/preset-typescript": "^7.21.4",
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^13.0.0",
-    "@testing-library/react-hooks": "^8.0.1",
-    "@testing-library/user-event": "^13.2.1",
     "@types/enzyme": "^3.10.13",
     "@types/enzyme-adapter-react-16": "^1.0.6",
     "@types/jest": "^27.0.1",
     "@types/jsdom": "^21.1.1",
-    "@types/text-encoding": "^0.0.36",
-    "@types/text-encoding-utf-8": "^1.0.2",
+    "@types/node": "^16.7.13",
+    "@types/react": "^18.0.0",
+    "@types/react-dom": "^18.0.0",
     "@types/uuid": "^9.0.1",
     "axios-mock-adapter": "^1.21.4",
     "enzyme": "^3.11.0",
     "enzyme-adapter-react-16": "^1.15.7",
     "jest": "^29.5.0",
-    "jest-environment-enzyme": "^7.1.2",
-    "jest-environment-jsdom": "^29.5.0",
-    "jest-localstorage-mock": "^2.4.26",
-    "jest-svg-transformer": "^1.0.0",
     "jsdom": "^21.1.1",
-    "jsdom-global": "^3.0.2",
-    "mock-local-storage": "^1.1.23",
     "svg-jest": "^1.0.1",
     "tailwindcss": "^3.2.7",
-    "text-encoding": "^0.7.0",
-    "text-encoding-utf-8": "^1.0.2",
     "ts-jest": "^29.1.0"
   },
   "eslintConfig": {
@@ -73,8 +59,7 @@
     ],
     "development": [
       "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
+      "last 1 firefox version"
     ]
   },
   "jest": {
@@ -83,7 +68,7 @@
     "clearMocks": true,
     "collectCoverage": true,
     "setupFiles": [
-      "./src/configs/setupTest.js"
+      "./src/tests/configs/setupTest.ts"
     ],
     "transform": {
       "^.+\\.js$": "babel-jest",
@@ -95,12 +80,10 @@
       "/axios/": "axios/dist/node/axios.cjs"
     },
     "moduleFileExtensions": [
-      "ts",
-      "tsx",
       "js",
-      "jsx",
-      "json",
-      "node"
+      "ts",
+      "tsx"
     ]
   }
 }
+

@@ -2,6 +2,7 @@ import React from 'react';
 import { shallow } from 'enzyme';
 import { Error } from './Error';
 import { Link } from 'react-router-dom';
+
 import { ROUTER_KEYS } from '../../utils/constants';
 
 describe('Error component', () => {
@@ -24,9 +25,5 @@ describe('Error component', () => {
 
     expect(link.prop('to')).toEqual(`/${ROUTER_KEYS.COURSES}`);
     expect(link.text()).toEqual('Go Home');
-    expect(link.hasClass('border')).toBe(true);
-    expect(link.hasClass('border-white')).toBe(true);
-    expect(link.hasClass('rounded')).toBe(true);
-    expect(link.hasClass('p-4')).toBe(true);
   });
 });

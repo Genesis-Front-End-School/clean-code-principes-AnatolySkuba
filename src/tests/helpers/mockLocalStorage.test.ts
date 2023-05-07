@@ -11,7 +11,7 @@ describe('LocalStorageMock', () => {
     localStorageMock.clear();
   });
 
-  test('setItem() and getItem() should work correctly', () => {
+  it('setItem() and getItem() should work correctly', () => {
     const key = 'testKey';
     const value = 'testValue';
 
@@ -20,7 +20,7 @@ describe('LocalStorageMock', () => {
     expect(localStorageMock.getItem(key)).toBe(value);
   });
 
-  test('removeItem() should work correctly', () => {
+  it('removeItem() should work correctly', () => {
     const key = 'testKey';
     const value = 'testValue';
 
@@ -30,7 +30,7 @@ describe('LocalStorageMock', () => {
     expect(localStorageMock.getItem(key)).toBeNull();
   });
 
-  test('clear() should clear all items', () => {
+  it('clear() should clear all items', () => {
     const key1 = 'testKey1';
     const value1 = 'testValue1';
     const key2 = 'testKey2';

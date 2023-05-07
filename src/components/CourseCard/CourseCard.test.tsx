@@ -1,15 +1,9 @@
+import React from 'react';
 import { shallow } from 'enzyme';
+
 import { CourseCard } from './CourseCard';
 import { VideoPlayer } from '..';
 import { ICourse } from '../../utils/types';
-
-jest.mock('hls.js', () => {
-  class Hls {
-    loadSource() {}
-    attachMedia() {}
-  }
-  return Hls;
-});
 
 describe('CourseCard', () => {
   const course: ICourse = {

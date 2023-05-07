@@ -1,3 +1,4 @@
+import React from 'react';
 import { shallow } from 'enzyme';
 import { useQuery } from 'react-query';
 import { useSearchParams } from 'react-router-dom';
@@ -9,14 +10,6 @@ jest.mock('react-query');
 jest.mock('react-router-dom', () => ({
   useSearchParams: jest.fn(),
 }));
-
-jest.mock('hls.js', () => {
-  class Hls {
-    loadSource() {}
-    attachMedia() {}
-  }
-  return Hls;
-});
 
 describe('CourseList component', () => {
   const courses = [

@@ -1,3 +1,4 @@
+import React from 'react';
 import { shallow } from 'enzyme';
 import { FcUndo } from 'react-icons/fc';
 import { useQuery } from 'react-query';
@@ -6,7 +7,6 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { Loader, Error } from '../../components';
 import { ICourse, LessonStatus } from '../../utils/types';
 import { Course } from './Course';
-import { getCourseById } from '../../api/courses.api';
 
 jest.mock('react-query');
 jest.mock('react-router-dom', () => ({
@@ -14,14 +14,6 @@ jest.mock('react-router-dom', () => ({
   useParams: jest.fn(),
 }));
 jest.mock('../../api/courses.api');
-
-jest.mock('hls.js', () => {
-  class Hls {
-    loadSource() {}
-    attachMedia() {}
-  }
-  return Hls;
-});
 
 describe('Course component', () => {
   const mockUseParams = useParams as jest.MockedFunction<typeof useParams>;

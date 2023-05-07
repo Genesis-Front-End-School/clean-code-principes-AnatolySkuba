@@ -3,7 +3,7 @@ import axios from 'axios';
 import { QUERY_KEYS } from '../utils/constants';
 import { getAllCourses, getCourseById } from './courses.api';
 
-jest.mock('axios'); // mock axios to prevent actual API calls
+jest.mock('axios');
 
 declare const global: any;
 

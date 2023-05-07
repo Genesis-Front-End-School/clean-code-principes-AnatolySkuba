@@ -1,19 +1,11 @@
+import React from 'react';
 import { render, fireEvent, screen } from '@testing-library/react';
 import { shallow } from 'enzyme';
 import '@testing-library/jest-dom';
-import 'jest-localstorage-mock';
 
 import { KeyboardButton } from '../../utils/types';
 import { LocalStorageMock } from '../../tests/helpers/mockLocalStorage';
 import { VideoPlayer } from './VideoPlayer';
-
-jest.mock('hls.js', () => {
-  class Hls {
-    loadSource() {}
-    attachMedia() {}
-  }
-  return Hls;
-});
 
 declare const global: any;
 
@@ -93,7 +85,7 @@ describe('VideoPlayer', () => {
     HTMLVideoElement.prototype.requestPictureInPicture = requestPictureInPictureMock;
 
     render(<VideoPlayer {...props} />);
-    const videoElement = screen.getByTestId('video-element');
+    const videoElement = screen.getByTestId('video-element') as HTMLVideoElement;
     const event = new window.Event('loadedmetadata', { bubbles: true });
     videoElement.dispatchEvent(event);
 

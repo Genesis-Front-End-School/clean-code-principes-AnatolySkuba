@@ -1,4 +1,4 @@
-import { cleanup } from '@testing-library/react';
+import React from 'react';
 import { shallow } from 'enzyme';
 
 import { Rating } from './Rating';
@@ -8,10 +8,9 @@ const props = {
 };
 
 describe('should render Rating component', () => {
-  afterEach(cleanup);
-
   it('should contain list wrapper', () => {
     const component = shallow(<Rating {...props} />);
+
     expect(component.find('ul').length).toBe(1);
   });
 });

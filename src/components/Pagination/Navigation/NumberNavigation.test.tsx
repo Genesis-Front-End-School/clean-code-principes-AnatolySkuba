@@ -1,7 +1,8 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import { getPaginationButtons, NumberNavigation } from './NumberNavigation';
 import { useSearchParams } from 'react-router-dom';
+
+import { getPaginationButtons, NumberNavigation } from './NumberNavigation';
 
 jest.mock('react-router-dom', () => ({
   useSearchParams: jest.fn(),
@@ -10,7 +11,7 @@ jest.mock('react-router-dom', () => ({
 describe('NumberNavigation component', () => {
   const coursesTotal = 50;
 
-  beforeEach(() => {
+  afterEach(() => {
     jest.clearAllMocks();
   });
 
@@ -53,6 +54,7 @@ describe('NumberNavigation component', () => {
       const currentPage = '1';
       const pagesTotal = '3';
       const paginationButtons = getPaginationButtons(currentPage, pagesTotal);
+
       expect(paginationButtons).toEqual(['1', '2', '3']);
     });
 
@@ -60,6 +62,7 @@ describe('NumberNavigation component', () => {
       const currentPage = '2';
       const pagesTotal = '10';
       const paginationButtons = getPaginationButtons(currentPage, pagesTotal);
+
       expect(paginationButtons).toEqual(['1', '2', '3', '...', '10']);
     });
 
@@ -67,6 +70,7 @@ describe('NumberNavigation component', () => {
       const currentPage = '8';
       const pagesTotal = '10';
       const paginationButtons = getPaginationButtons(currentPage, pagesTotal);
+
       expect(paginationButtons).toEqual(['1', '...', '8', '9', '10']);
     });
 
@@ -74,6 +78,7 @@ describe('NumberNavigation component', () => {
       const currentPage = '5';
       const pagesTotal = '10';
       const paginationButtons = getPaginationButtons(currentPage, pagesTotal);
+
       expect(paginationButtons).toEqual(['1', '...', '5', '...', '10']);
     });
   });

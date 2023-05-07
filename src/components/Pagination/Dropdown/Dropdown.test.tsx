@@ -1,9 +1,9 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import { useSearchParams } from 'react-router-dom';
-import { Dropdown, Props } from './Dropdown';
-import { fireEvent, render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
+
+import { Dropdown, Props } from './Dropdown';
 
 jest.mock('react-router-dom', () => ({
   useSearchParams: jest.fn(),
@@ -17,8 +17,11 @@ describe('Dropdown', () => {
   };
 
   beforeEach(() => {
-    jest.clearAllMocks();
     (useSearchParams as jest.Mock).mockReturnValue([new URLSearchParams('?page=1&perPage=10')]);
+  });
+
+  afterEach(() => {
+    jest.clearAllMocks();
   });
 
   it('should render the correct list in the dropdown list', () => {
@@ -32,8 +35,9 @@ describe('Dropdown', () => {
     const searchParams = new URLSearchParams('?page=1&perPage=10');
     (useSearchParams as jest.Mock).mockImplementation(() => [searchParams, setSearchParams]);
 
-    render(<Dropdown {...props} />);
-    fireEvent.click(screen.getByText('20 items'));
+    const wrapper = shallow(<Dropdown {...props} />);
+    const button = wrapper.find('button').at(0); // get the first button
+    button.simulate('click');
 
     expect(setSearchParams).toHaveBeenCalledWith({ page: '1', perPage: '20' });
   });
@@ -43,8 +47,9 @@ describe('Dropdown', () => {
     const searchParams = new URLSearchParams('?page=2&perPage=10');
     (useSearchParams as jest.Mock).mockImplementation(() => [searchParams, setSearchParams]);
 
-    render(<Dropdown {...props} />);
-    fireEvent.click(screen.getByText('20 items'));
+    const wrapper = shallow(<Dropdown {...props} />);
+    const button = wrapper.find('button').at(0); // get the first button
+    button.simulate('click');
 
     expect(setSearchParams).toHaveBeenCalledWith({ page: '1', perPage: '20' });
   });
@@ -54,8 +59,9 @@ describe('Dropdown', () => {
     const searchParams = new URLSearchParams('');
     (useSearchParams as jest.Mock).mockImplementation(() => [searchParams, setSearchParams]);
 
-    render(<Dropdown {...props} />);
-    fireEvent.click(screen.getByText('20 items'));
+    const wrapper = shallow(<Dropdown {...props} />);
+    const button = wrapper.find('button').at(0); // get the first button
+    button.simulate('click');
 
     expect(setSearchParams).toHaveBeenCalledWith({ page: '1', perPage: '20' });
   });

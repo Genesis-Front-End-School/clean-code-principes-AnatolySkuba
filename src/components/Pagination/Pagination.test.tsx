@@ -1,3 +1,4 @@
+import React from 'react';
 import { shallow } from 'enzyme';
 import { useSearchParams } from 'react-router-dom';
 import '@testing-library/jest-dom';
@@ -22,8 +23,11 @@ describe('Pagination', () => {
     .mockImplementation(() => [mockSearchParams, mockSetSearchParams]);
 
   beforeEach(() => {
-    jest.clearAllMocks();
     (useSearchParams as jest.Mock).mockReturnValue([new URLSearchParams('?page=1&perPage=10')]);
+  });
+
+  afterEach(() => {
+    jest.clearAllMocks();
   });
 
   it('should show the correct number of items', () => {
