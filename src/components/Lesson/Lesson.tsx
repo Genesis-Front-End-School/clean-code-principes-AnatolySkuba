@@ -25,7 +25,7 @@ export const Lesson: FC<ILessonProps> = ({ id, title, status, link }): JSX.Eleme
   return (
     <>
       <p
-        className="flex items-center gap-3 cursor-pointer text-blue-800 hover:scale-105 hover:ml-2"
+        className="flex items-center gap-3 cursor-pointer text-blue-800 hover:font-semibold hover:ml-2"
         onClick={() => handleLesson()}
         role="button"
       >

@@ -5,18 +5,18 @@ import { KeyboardButton } from '../../utils/types';
 export interface VideoPlayerProps {
   id?: string;
   src: string;
+  className?: string;
   muted?: boolean;
   controls?: boolean;
   withPictureInPicture?: boolean;
-  width?: number | string;
   autoPlay?: boolean;
 }
 
 export const VideoPlayer: FC<VideoPlayerProps> = ({
   id,
   src,
+  className,
   muted = false,
-  width = '78%',
   autoPlay = false,
   controls = false,
   withPictureInPicture = false,
@@ -88,16 +88,13 @@ export const VideoPlayer: FC<VideoPlayerProps> = ({
   }, []);
 
   return (
-    <div>
-      <video
-        width={width}
-        height={'auto'}
-        ref={videoRef}
-        autoPlay={autoPlay}
-        controls={controls}
-        muted={muted}
-        loop
-      />
-    </div>
+    <video
+      className={className}
+      ref={videoRef}
+      autoPlay={autoPlay}
+      controls={controls}
+      muted={muted}
+      loop
+    />
   );
 };
