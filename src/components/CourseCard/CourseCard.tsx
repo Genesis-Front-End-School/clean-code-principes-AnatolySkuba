@@ -27,7 +27,7 @@ export const CourseCard = ({
           {isHovered ? (
             <VideoPlayer
               className="absolute top-0 h-full w-full rounded-md object-contain"
-              src={meta.courseVideoPreview?.link}
+              src={meta.courseVideoPreview.link}
               id={id}
               muted
               autoPlay

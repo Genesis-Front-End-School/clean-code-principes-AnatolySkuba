@@ -1,5 +1,5 @@
 import { shallow } from 'enzyme';
-import { LessonStatus } from '../../utils/types';
+import { ILesson, LessonStatus } from '../../utils/types';
 import { Lesson } from './Lesson';
 import { toast } from 'react-toastify';
 
@@ -12,11 +12,12 @@ jest.mock('hls.js', () => {
 });
 
 describe('Lesson Component', () => {
-  const lesson = {
+  const lesson: ILesson = {
     id: '1',
     title: 'Lesson 1',
-    status: 'unlocked',
+    status: LessonStatus.Unlocked,
     link: 'https://www.example.com',
+    duration: 0,
   };
 
   it('should render lesson title', () => {
@@ -28,7 +29,7 @@ describe('Lesson Component', () => {
   it('should show lock icon for locked lessons', () => {
     const lockedLesson = {
       ...lesson,
-      status: 'locked',
+      status: LessonStatus.Locked,
     };
     const wrapper = shallow(<Lesson {...lockedLesson} />);
     const lockIcon = wrapper.find('SlLock');
@@ -44,10 +45,8 @@ describe('Lesson Component', () => {
 
   it('should show error message when locked lesson is clicked', () => {
     const lockedLesson = {
-      id: '1',
-      title: 'Introduction',
+      ...lesson,
       status: LessonStatus.Locked,
-      link: 'https://example.com',
     };
 
     const mockToast = jest.spyOn(toast, 'error');

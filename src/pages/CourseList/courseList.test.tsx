@@ -1,10 +1,11 @@
-import { useSearchParams as useReactRouterSearchParams } from 'react-router-dom';
-import { render, screen } from '@testing-library/react';
+import { shallow } from 'enzyme';
 import { useQuery } from 'react-query';
-import '@testing-library/jest-dom';
+import { useSearchParams } from 'react-router-dom';
+import { Loader, Error, CourseCard, Pagination } from '../../components';
 
 import { CourseList } from './CourseList';
 
+jest.mock('react-query');
 jest.mock('react-router-dom', () => ({
   useSearchParams: jest.fn(),
 }));
@@ -17,75 +18,52 @@ jest.mock('hls.js', () => {
   return Hls;
 });
 
-jest.mock('react-query');
-
-jest.mock('../../components/Loader', () => ({
-  __esModule: true,
-  Loader: () => 'Mocked the Loader Component',
-}));
-
-jest.mock('../../components/Error', () => ({
-  __esModule: true,
-  Error: () => 'Mocked the Error Component',
-}));
-
-jest.mock('../../components/CourseCard', () => ({
-  __esModule: true,
-  CourseCard: () => 'Mocked the CourseCard Component',
-}));
-
-jest.mock('../../components/Pagination', () => ({
-  __esModule: true,
-  Pagination: () => 'Mocked the Pagination Component',
-}));
-
-const mockData = [
-  { id: 1, title: 'Course 1' },
-  { id: 2, title: 'Course 2' },
-  { id: 3, title: 'Course 3' },
-  { id: 4, title: 'Course 4' },
-  { id: 5, title: 'Course 5' },
-  { id: 6, title: 'Course 6' },
-  { id: 7, title: 'Course 7' },
-  { id: 8, title: 'Course 8' },
-  { id: 9, title: 'Course 9' },
-  { id: 10, title: 'Course 10' },
-  { id: 11, title: 'Course 11' },
-];
-
 describe('CourseList component', () => {
-  beforeEach(() => {
-    // Reset the mock implementation before each test
-    (useReactRouterSearchParams as jest.Mock).mockReset();
+  const courses = [
+    { id: 1, title: 'Course 1', description: 'Description 1' },
+    { id: 2, title: 'Course 2', description: 'Description 2' },
+    { id: 3, title: 'Course 3', description: 'Description 3' },
+  ];
 
-    // Mock the return value of useSearchParams
-    const mockSearchParams = new URLSearchParams('perPage=10&page=1');
-    (useReactRouterSearchParams as jest.Mock).mockReturnValue([mockSearchParams]);
+  beforeEach(() => {
+    (useQuery as jest.Mock).mockReturnValue({ data: courses, isLoading: false, isError: false });
+    (useSearchParams as jest.Mock).mockReturnValue({ get: jest.fn() });
+    const setSearchParams = jest.fn();
+    const searchParams = new URLSearchParams('');
+    (useSearchParams as jest.Mock).mockImplementation(() => [searchParams, setSearchParams]);
   });
 
   afterEach(jest.clearAllMocks);
 
-  it('Displays the loading view', () => {
+  it('renders the loader when loading', () => {
     (useQuery as jest.Mock).mockReturnValue({ isLoading: true });
 
-    render(<CourseList />);
+    const wrapper = shallow(<CourseList />);
 
-    expect(screen.getByText(/Mocked the Loader Component/)).toBeInTheDocument();
+    expect(wrapper.find(Loader)).toHaveLength(1);
   });
 
-  it('Displays the Error Component', () => {
+  it('renders the error when there is an error', () => {
     (useQuery as jest.Mock).mockReturnValue({ isError: true });
 
-    render(<CourseList />);
+    const wrapper = shallow(<CourseList />);
 
-    expect(screen.getByText(/Mocked the Error Component/)).toBeInTheDocument();
+    expect(wrapper.find(Error)).toHaveLength(1);
   });
 
-  it('Render CourseList correctly', async () => {
-    (useQuery as jest.Mock).mockReturnValue({ data: mockData, isLoading: false, isError: false });
+  it('renders the list of courses when loaded', () => {
+    const wrapper = shallow(<CourseList />);
 
-    render(<CourseList />);
+    expect(wrapper.find(CourseCard)).toHaveLength(courses.length);
+  });
 
-    expect(screen.getByRole('listbox')).toBeInTheDocument();
+  it('renders pagination the list of courses when loaded', () => {
+    const setSearchParams = jest.fn();
+    const searchParams = new URLSearchParams('perPage=2&page=1');
+    (useSearchParams as jest.Mock).mockImplementation(() => [searchParams, setSearchParams]);
+
+    const wrapper = shallow(<CourseList />);
+
+    expect(wrapper.find(Pagination)).toHaveLength(1);
   });
 });

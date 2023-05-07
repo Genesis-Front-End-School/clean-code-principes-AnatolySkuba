@@ -16,8 +16,9 @@ export interface ICourse {
 export interface ILesson {
   id: string;
   title: string;
-  status: string;
+  status: LessonStatus;
   link: string;
+  duration: number;
 }
 
 interface IMeta {
@@ -38,7 +39,3 @@ export enum KeyboardButton {
   Comma = 'Comma',
   Period = 'Period',
 }
-
-export type QueryKey = {
-  queryKey: (string | { courseId: string })[];
-};

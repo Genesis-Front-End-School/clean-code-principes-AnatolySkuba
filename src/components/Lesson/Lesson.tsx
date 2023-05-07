@@ -9,7 +9,7 @@ import { VideoPlayer } from '../../components';
 interface ILessonProps extends ILesson {
   id: string;
   title: string;
-  status: string;
+  status: LessonStatus;
   link: string;
 }
 

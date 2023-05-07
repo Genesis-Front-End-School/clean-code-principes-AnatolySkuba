@@ -44,7 +44,7 @@ describe('getAllCourses', () => {
 });
 
 describe('getCourseById', () => {
-  const mockQueryKey = ['courses', { courseId: '1' }];
+  const mockQueryKey = '1';
   const mockCourse = {
     id: '1',
     title: 'Test Course',
@@ -55,7 +55,7 @@ describe('getCourseById', () => {
       data: mockCourse,
     });
 
-    const result = await getCourseById({ queryKey: mockQueryKey });
+    const result = await getCourseById(mockQueryKey);
 
     expect(result).toEqual(mockCourse);
     expect(axios.get).toHaveBeenCalledWith(
@@ -68,7 +68,7 @@ describe('getCourseById', () => {
     const error = new Error('Network error');
     (axios.get as jest.MockedFunction<typeof axios.get>).mockRejectedValue(error);
 
-    await expect(getCourseById({ queryKey: mockQueryKey })).rejects.toThrow(
+    await expect(getCourseById(mockQueryKey)).rejects.toThrow(
       'Oops, error in getting credentials. Network error'
     );
   });

@@ -1,23 +1,21 @@
-import { FcAcceptDatabase, FcPositiveDynamic, FcUndo, FcVoicePresentation } from 'react-icons/fc';
+import { FcAcceptDatabase, FcUndo } from 'react-icons/fc';
 import { useQuery } from 'react-query';
 import { useNavigate, useParams } from 'react-router-dom';
-import { getCourseById } from '../../api/courses.api';
 
-// import { useCourseQuery } from './useCourseQuery';
+import { getCourseById } from '../../api/courses.api';
 import { Lesson, VideoPlayer, Loader, Error } from '../../components';
 import { ROUTER_KEYS } from '../../utils/constants';
 import { ILesson } from '../../utils/types';
 
 export const Course = (): JSX.Element => {
   const navigate = useNavigate();
-  // const { courseId } = useParams<{ courseId: string }>();
   const params = useParams<{ courseId: string }>();
-  // const { course, isLoading, isError } = useCourseQuery( courseId! );
+  const courseId = params.courseId || '';
   const {
     data: course,
     isLoading,
     isError,
-  } = useQuery([`${ROUTER_KEYS.COURSES}`, { courseId: params.courseId || '' }], getCourseById);
+  } = useQuery([`${ROUTER_KEYS.COURSES}`, { courseId }], () => getCourseById(courseId));
 
   if (isLoading) {
     return <Loader />;
@@ -27,47 +25,17 @@ export const Course = (): JSX.Element => {
     return <Error />;
   }
 
-  const { id, title, description, lessons, rating, meta } = course;
+  const { id, title, description, lessons, meta } = course;
 
   return (
     <div className="p-5 bg-slate-100 h-screen" role="article">
       <FcUndo className="cursor-pointer" onClick={() => navigate(-1)} role="link" />
-      <div className="mx-auto">
-        <VideoPlayer id={id} src={meta?.courseVideoPreview?.link} controls />
+      <div className="mx-auto bg-white rounded-md">
+        <h1 className="p-2 font-medium">{title}</h1>
+        <VideoPlayer id={id} src={meta?.courseVideoPreview.link} controls />
       </div>
       <div className="mt-2">
-        <h1 className="text-xl font-medium">{title}</h1>
         <p className="text-gray-700">{description}</p>
-
-        <div className="flex items-center justify-around text-xs">
-          <div className="mt-1.5">
-            <p className="text-gray-500">Rating</p>
-            <p className="flex font-medium gap-1">
-              <FcPositiveDynamic size="16" />
-              {rating}
-            </p>
-          </div>
-
-          <div className="mt-1.5">
-            <div className="flex gap-2">
-              <p className="text-gray-500">Skills</p>
-              <FcVoicePresentation size="16" />
-            </div>
-            <ul>
-              {meta?.skills ? (
-                meta.skills?.map((skill: string, index: number) => (
-                  <li key={index}>
-                    <p className="w-50 font-medium">{skill}</p>
-                  </li>
-                ))
-              ) : (
-                <li>
-                  <p>?</p>
-                </li>
-              )}
-            </ul>
-          </div>
-        </div>
 
         <div className="mt-2">
           <div className="flex gap-2 items-center">

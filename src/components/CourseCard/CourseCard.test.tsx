@@ -1,6 +1,7 @@
 import { shallow } from 'enzyme';
 import { CourseCard } from './CourseCard';
 import { VideoPlayer } from '..';
+import { ICourse } from '../../utils/types';
 
 jest.mock('hls.js', () => {
   class Hls {
@@ -11,7 +12,7 @@ jest.mock('hls.js', () => {
 });
 
 describe('CourseCard', () => {
-  const course = {
+  const course: ICourse = {
     id: '1',
     title: 'Test Course',
     description: 'This is a test course',
@@ -31,7 +32,7 @@ describe('CourseCard', () => {
     expect(wrapper.find(VideoPlayer)).toHaveLength(0);
     wrapper.simulate('mouseenter');
     expect(wrapper.find(VideoPlayer)).toHaveLength(1);
-    expect(wrapper.find(VideoPlayer).prop('src')).toEqual(course.meta.courseVideoPreview?.link);
+    expect(wrapper.find(VideoPlayer).prop('src')).toEqual(course.meta.courseVideoPreview.link);
     wrapper.simulate('mouseleave');
     expect(wrapper.find(VideoPlayer)).toHaveLength(0);
   });
