@@ -1,1 +1,3 @@
-export { default as Pagination } from './pagination';
+export * from './pagination';
+export * from './rating';
+export * from './theme-switcher';

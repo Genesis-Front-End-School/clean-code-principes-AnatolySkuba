@@ -21,12 +21,12 @@ const Pagination: FC<Props> = ({ coursesTotal }) => {
   } of ${coursesTotal} entries`;
 
   return (
-    <div className="mb-8 flex flex-col items-center justify-center">
+    <div className="pb-5 flex flex-col items-center justify-center">
       <div className="text-xs">
-        <div className="relative text-gray-600 font-medium text-center">
+        <div className="relative text-gray-600 dark:text-gray-300 font-medium text-center">
           <button
             onClick={() => setShowDropdown(!showDropdown)}
-            className="p-2 px-4 hover:bg-gray-100 inline-flex"
+            className="p-2 px-4 hover:bg-gray-200 dark:hover:bg-stone-800 inline-flex"
           >
             {`${perPage} items`}
             <svg className="h-4 w-4 ml-2 -rotate-90" strokeWidth="2">
@@ -41,7 +41,7 @@ const Pagination: FC<Props> = ({ coursesTotal }) => {
             />
           )}
         </div>
-        <p className="text-gray-500 mt-4 lg:mt-0">{showing}</p>
+        <p className="text-gray-500 mt-4 lg:mt-0 dark:text-gray-300">{showing}</p>
       </div>
       <Navigation coursesTotal={coursesTotal} />
     </div>

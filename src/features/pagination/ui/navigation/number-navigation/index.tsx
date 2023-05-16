@@ -45,8 +45,9 @@ export const NumberNavigation: FC<Props> = ({ coursesTotal }) => {
       {paginationButtons.map((button, i) => (
         <button
           key={i}
-          className={`w-10 h-10 mx-1 text-center rounded hover:bg-gray-100 cursor-pointer ${
-            currentPage === button && 'bg-gray-200 text-gray-900 font-medium'
+          className={`w-10 h-10 mx-1 text-center rounded hover:bg-gray-100 dark:hover:bg-stone-800 cursor-pointer ${
+            currentPage === button &&
+            'bg-gray-200 dark:bg-gray-400 text-gray-900 dark:hover:text-gray-400 font-medium'
           }`}
           onClick={() => getPage(button, i)}
         >

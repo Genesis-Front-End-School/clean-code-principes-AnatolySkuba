@@ -22,6 +22,18 @@
       Learn how to configure a non-root public URL by running `npm run build`.
     -->
     <title>Courses</title>
+    <script>
+      // Tailwind CSS Dark Mode
+      if (
+        localStorage.getItem('color-theme') === 'dark' ||
+        (!('color-theme' in localStorage) &&
+          window.matchMedia('(prefers-color-scheme: dark)').matches)
+      ) {
+        document.documentElement.classList.add('dark');
+      } else {
+        document.documentElement.classList.remove('dark');
+      }
+    </script>
   </head>
   <body>
     <div id="root"></div>

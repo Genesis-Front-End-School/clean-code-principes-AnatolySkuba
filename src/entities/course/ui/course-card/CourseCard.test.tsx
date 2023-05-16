@@ -1,10 +1,10 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 
-import { ICourse } from '../../../../entities/course';
+import { ICourse } from '../..';
 import { VideoPlayer } from 'shared/ui';
 
-import CourseCard from '.';
+import CourseCard from './CourseCard';
 
 describe('CourseCard', () => {
   const course: ICourse = {
@@ -20,6 +20,8 @@ describe('CourseCard', () => {
         link: '/test-video-link',
       },
     },
+    duration: 1,
+    launchDate: '2023-03-06T16:50:06.000Z',
   };
 
   it('renders the video player when hovered and the preview image otherwise', () => {

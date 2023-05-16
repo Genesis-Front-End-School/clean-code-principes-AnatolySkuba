@@ -7,7 +7,7 @@ import { Pagination } from '../../features';
 import { CourseCard } from '../../entities/course';
 import { Loader, Error } from 'shared/ui';
 
-import CoursesList from '.';
+import CoursesList from './CoursesList';
 
 jest.mock('react-query');
 jest.mock('react-router-dom', () => ({

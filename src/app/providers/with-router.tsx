@@ -1,15 +1,11 @@
-import { Suspense } from 'react';
-import { QueryClientProvider } from 'react-query';
+import { ReactNode, Suspense } from 'react';
 import { BrowserRouter } from 'react-router-dom';
 
-import { queryClient } from 'shared/config';
 import { Loader } from 'shared/ui';
 
-export const withRouter = (component: () => React.ReactNode) => () =>
+export const withRouter = (component: () => ReactNode) => () =>
   (
     <BrowserRouter>
-      <Suspense fallback={<Loader />}>
-        <QueryClientProvider client={queryClient}>{component()}</QueryClientProvider>
-      </Suspense>
+      <Suspense fallback={<Loader />}>{component()}</Suspense>
     </BrowserRouter>
   );

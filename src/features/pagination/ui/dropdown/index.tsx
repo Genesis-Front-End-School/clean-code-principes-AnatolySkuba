@@ -28,16 +28,14 @@ const Dropdown: FC<Props> = ({ coursesTotal, showDropdown, setShowDropdown }) =>
   };
 
   return (
-    <div className="absolute top-8 left-7 bg-white shadow">
+    <div className="absolute top-8 left-10 bg-white dark:bg-stone-800 shadow">
       <ul>
         {coursesPerPage.map((item, i) => (
-          <li key={i}>
+          <li key={i} className="hover:bg-gray-100 dark:hover:bg-stone-900">
             <button
+              className="py-2 px-4"
               onClick={() => changeCoursesPerPage(+item)}
-              className="py-2 px-4 hover:bg-gray-100"
-            >
-              {`${item} items`}
-            </button>
+            >{`${item} items`}</button>
           </li>
         ))}
       </ul>

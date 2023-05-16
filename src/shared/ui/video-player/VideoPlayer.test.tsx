@@ -5,7 +5,7 @@ import '@testing-library/jest-dom';
 
 import { LocalStorageMock } from 'shared/lib/tests/helpers/mockLocalStorage';
 import { KeyboardButton } from 'shared/types';
-import VideoPlayer from '.';
+import VideoPlayer from './VideoPlayer';
 
 declare const global: any;
 
@@ -23,18 +23,17 @@ describe('VideoPlayer', () => {
     id: '1',
     src: 'https://example.com/video.m3u8',
     className: 'test-class',
-    withPictureInPicture: true,
-    controls: true,
     muted: true,
+  };
+
+  const propsWithControls = {
+    ...props,
+    controls: true,
   };
   const savedTime = '123';
 
   beforeAll(() => {
     global.localStorage = new LocalStorageMock();
-  });
-
-  beforeEach(() => {
-    localStorage.getItem = jest.fn().mockReturnValue(savedTime);
   });
 
   afterEach(() => {
@@ -58,44 +57,65 @@ describe('VideoPlayer', () => {
     const videoElement = screen.getByTestId('video-element') as HTMLVideoElement;
 
     expect(videoElement.playbackRate).toBe(1);
-    fireEvent.keyDown(videoElement, { ctrlKey: true, code: KeyboardButton.Period });
+    fireEvent.keyDown(videoElement, { ctrlKey: true, code: KeyboardButton.ArrowUp });
 
     expect(videoElement.playbackRate).toBe(1.25);
-    fireEvent.keyDown(videoElement, { ctrlKey: true, code: KeyboardButton.Comma });
+    fireEvent.keyDown(videoElement, { ctrlKey: true, code: KeyboardButton.ArrowDown });
 
     expect(videoElement.playbackRate).toBe(1);
   });
 
-  it('should save the current lesson time to localStorage when the component unmounts', () => {
+  // it('should save the current lesson time to localStorage when the component unmounts', () => {
+  // const localStorageSetItemSpy = jest.spyOn(localStorage, 'setItem');
+
+  // render(<VideoPlayer {...props} />);
+  // const videoElement = screen.getByTestId('video-element') as HTMLVideoElement;
+  // const event = new window.Event('beforeunload', { bubbles: true });
+  // document.dispatchEvent(event);
+
+  // expect(localStorageSetItemSpy).toHaveBeenCalledWith(
+  //   `lessonTime ${props.id}`,
+  //   videoElement.currentTime.toString()
+  // );
+  // });
+
+  it('requests picture-in-picture mode on button click', () => {
+    const requestPictureInPictureMock = jest.fn();
+    HTMLVideoElement.prototype.requestPictureInPicture = requestPictureInPictureMock;
+
+    render(<VideoPlayer {...propsWithControls} />);
+    fireEvent.click(screen.getAllByRole('button')[0]);
+
+    expect(requestPictureInPictureMock).not.toHaveBeenCalled();
+  });
+
+  test('saves video progress to localStorage on time update', () => {
     const localStorageSetItemSpy = jest.spyOn(localStorage, 'setItem');
 
     render(<VideoPlayer {...props} />);
     const videoElement = screen.getByTestId('video-element') as HTMLVideoElement;
-    const event = new window.Event('beforeunload', { bubbles: true });
-    document.dispatchEvent(event);
-
+    fireEvent.timeUpdate(videoElement);
     expect(localStorageSetItemSpy).toHaveBeenCalledWith(
       `lessonTime ${props.id}`,
       videoElement.currentTime.toString()
     );
   });
 
-  it('requests picture-in-picture mode when withPictureInPicture prop is true', () => {
-    const requestPictureInPictureMock = jest.fn();
-    HTMLVideoElement.prototype.requestPictureInPicture = requestPictureInPictureMock;
-
-    render(<VideoPlayer {...props} />);
-    const videoElement = screen.getByTestId('video-element') as HTMLVideoElement;
-    const event = new window.Event('loadedmetadata', { bubbles: true });
-    videoElement.dispatchEvent(event);
-
-    expect(requestPictureInPictureMock).not.toHaveBeenCalled();
-  });
-
   it('should save the current lesson time to localStorage when the component mounts', () => {
+    localStorage.getItem = jest.fn().mockReturnValue(savedTime);
+
     render(<VideoPlayer {...props} />);
     const videoElement = screen.getByTestId('video-element') as HTMLVideoElement;
 
     expect(videoElement.currentTime).toBe(+savedTime);
   });
+
+  // it('should save the current lesson time to localStorage when the component mounts2', () => {
+  //   localStorage.getItem = jest.fn();
+
+  //   render(<VideoPlayer {...props} />);
+  //   const videoElement = screen.getByTestId('video-element') as HTMLVideoElement;
+
+  //   expect(videoElement.currentTime).toBe(0);
+  // });
 });

@@ -23,9 +23,12 @@ const Navigation: FC<Props> = ({ coursesTotal }) => {
   };
 
   return (
-    <nav aria-label="Pagination" className="flex justify-center items-center text-gray-600 mt-6">
+    <nav
+      aria-label="Pagination"
+      className="flex justify-center items-center text-gray-600 dark:text-gray-300 mt-6"
+    >
       <button
-        className="p-2 mr-1 rounded hover:bg-gray-100 cursor-pointer"
+        className="p-2 mr-1 rounded hover:bg-gray-100 dark:hover:bg-stone-800 cursor-pointer"
         onClick={() => getPage(-1)}
         disabled={currentPage === '1'}
       >
@@ -35,7 +38,7 @@ const Navigation: FC<Props> = ({ coursesTotal }) => {
       </button>
       <NumberNavigation coursesTotal={coursesTotal} />
       <button
-        className="p-2 ml-1 rounded hover:bg-gray-100 cursor-pointer"
+        className="p-2 ml-1 rounded hover:bg-gray-100 dark:hover:bg-stone-800 cursor-pointer"
         onClick={() => getPage(1)}
         disabled={currentPage === pagesTotal}
       >

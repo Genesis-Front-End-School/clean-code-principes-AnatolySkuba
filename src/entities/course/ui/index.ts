@@ -1,2 +1,2 @@
-export { default as CourseCard } from './course-card';
-export { default as CourseLesson } from './course-lesson';
+export { CourseCard } from './course-card';
+export { CourseLesson } from './course-lesson';

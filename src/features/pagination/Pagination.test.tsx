@@ -3,7 +3,7 @@ import { shallow } from 'enzyme';
 import { useSearchParams } from 'react-router-dom';
 import '@testing-library/jest-dom';
 
-import Pagination from '.';
+import { Pagination } from '.';
 import { COURSES_PER_PAGE } from 'shared/consts';
 
 jest.mock('react-router-dom', () => ({

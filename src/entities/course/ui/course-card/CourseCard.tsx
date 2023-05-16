@@ -1,8 +1,9 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 
-import { ICourse } from '../../../../entities/course';
-import { Rating, VideoPlayer } from 'shared/ui';
+import { Rating } from 'features/rating';
+import { ICourse } from '../..';
+import { VideoPlayer } from 'shared/ui';
 
 const CourseCard = ({
   id,
@@ -17,12 +18,12 @@ const CourseCard = ({
 
   return (
     <li
-      className="block relative min-w-fill rounded-lg p-3 pb-9 border shadow-md shadow-gray-500 hover:scale-105"
+      className="relative min-w-fill rounded-lg bg-white dark:bg-stone-900 duration-700 border shadow-md hover:shadow-lg shadow-gray-500 hover:shadow-gray-800 dark:hover:shadow-gray-400"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
-      <Link to={id}>
-        <div className="relative h-28 w-64 mx-auto" data-testid="group">
+      <Link to={id} className="block p-3 pb-10">
+        <div className="relative h-28 w-64 mx-auto">
           {isHovered ? (
             <VideoPlayer
               className="absolute top-0 h-full w-full rounded-md object-contain"
@@ -39,18 +40,20 @@ const CourseCard = ({
             />
           )}
         </div>
-        <div className="mt-1">
+        <div className="mt-1 dark:text-gray-200">
           <h2 className="font-medium">{title}</h2>
-          <p className="text-sm text-gray-500">{description}</p>
+          <p className="text-sm text-gray-500 dark:text-gray-200">{description}</p>
 
-          <div className="mt-1 text-xs">
+          <div className="mt-1 text-xs ">
             <div>
               {meta.skills && (
-                <p className="text-gray-500">{`Skills: ${meta.skills.join(', ')}.`}</p>
+                <p className="text-gray-500 dark:text-gray-200">{`Skills: ${meta.skills.join(
+                  ', '
+                )}.`}</p>
               )}
               <div className="absolute bottom-3 w-full flex justify-between">
                 <Rating rating={rating} />
-                <p className="mr-6 text-gray-500">Lessons: {lessonsCount}</p>
+                <p className="mr-6 text-gray-500 dark:text-gray-400">Lessons: {lessonsCount}</p>
               </div>
             </div>
           </div>

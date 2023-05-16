@@ -4,7 +4,7 @@ import { Routes, Route, Navigate } from 'react-router-dom';
 import { ROUTER_KEYS } from 'shared/consts';
 
 const CourseList = lazy(() => import('./courses-list'));
-const CourseDetails = lazy(() => import('./course-details'));
+const CourseDetails = lazy(() => import('./course-details/CourseDetails'));
 
 const Routing = () => {
   return (

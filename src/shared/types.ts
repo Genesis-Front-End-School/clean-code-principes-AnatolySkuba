@@ -3,6 +3,6 @@ export type Token = {
 };
 
 export enum KeyboardButton {
-  Comma = 'Comma',
-  Period = 'Period',
+  ArrowUp = 'ArrowUp',
+  ArrowDown = 'ArrowDown',
 }

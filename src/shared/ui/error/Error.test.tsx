@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 
 import { ROUTER_KEYS } from 'shared/consts';
 
-import Error from '.';
+import { Error } from '.';
 
 describe('Error component', () => {
   it('renders a 404 error message', () => {

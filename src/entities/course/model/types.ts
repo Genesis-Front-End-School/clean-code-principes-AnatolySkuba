@@ -11,6 +11,8 @@ export interface ICourse {
   lessons?: ILesson[];
   rating: number;
   meta: IMeta;
+  duration: number;
+  launchDate: string;
 }
 
 export interface ILesson {
